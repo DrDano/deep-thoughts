@@ -13,6 +13,7 @@ const startServer = async () => {
   const server = new ApolloServer({ 
     typeDefs, 
     resolvers, 
+    context: ({req}) => req.headers
   });
 
   // Start the Apollo server
