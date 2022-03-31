@@ -33,6 +33,7 @@ function App() {
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/thought" component={SingleThought} />
+            <Route exact path="*"><div className="404">404 No Page at this URL</div></Route>
           </div>
           <Footer />
         </div>
