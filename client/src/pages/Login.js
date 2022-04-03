@@ -24,7 +24,6 @@ const Login = (props) => {
     const { data } = await login({
       variables: { ...formState }
     });
-    console.log(data)
 
     try {
       const { data } = await login({
