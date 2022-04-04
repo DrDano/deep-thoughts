@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_USER, QUERY_ME } from "../utils/queries";
 import { ADD_FRIEND } from "../utils/mutation";
 import FriendList from "../components/FriendList";
+import ThoughtForm from "../components/ThoughtForm"
 import Auth from "../utils/auth";
 
 const Profile = () => {
@@ -47,6 +48,7 @@ const Profile = () => {
   return (
     <div>
       <div className="flex-row mb-3">
+        <div className="mb-3">{!userParam && <ThoughtForm />}</div>
         <h2 className="bg-dark text-secondary p-3 display-inline-block">
           Viewing {userParam ? `${user.username}'s` : "your"} profile.
         </h2>
