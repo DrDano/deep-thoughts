@@ -6,7 +6,16 @@ const ThoughtForm = () => {
   const [thoughtText, setText] = useState("");
   const [characterCount, setCharacterCount] = useState(0);
 
-  const [addThought, { error }] = useMutation(ADD_THOUGHT);
+  const [addThought, { error }] = useMutation(ADD_THOUGHT, {
+    update(cache, { data: { addThought } }) {
+      const { thoughts } = cache.readQuery({ query: QUERY_THOUGHTS });
+
+      cache.writeQuery({
+        query: QUERY_THOUGHTS,
+        data: { thoughts: [addThought, ...thoughts] },
+      });
+    },
+  });
 
   const handleChange = (event) => {
     if (event.target.value.length <= 280) {
