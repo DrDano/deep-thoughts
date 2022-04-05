@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { ADD_THOUGHT } from "../../utils/mutation";
+import { QUERY_THOUGHTS, QUERY_ME } from "../../utils/queries";
 
 const ThoughtForm = () => {
   const [thoughtText, setText] = useState("");
@@ -8,11 +9,21 @@ const ThoughtForm = () => {
 
   const [addThought, { error }] = useMutation(ADD_THOUGHT, {
     update(cache, { data: { addThought } }) {
-      const { thoughts } = cache.readQuery({ query: QUERY_THOUGHTS });
+      try {
+        const { thoughts } = cache.readQuery({ query: QUERY_THOUGHTS });
 
+        cache.writeQuery({
+          query: QUERY_THOUGHTS,
+          data: { thoughts: [addThought, ...thoughts] },
+        });
+      } catch (err) {
+        console.log(err);
+      }
+
+      const { me } = cache.readQuery({ query: QUERY_ME });
       cache.writeQuery({
-        query: QUERY_THOUGHTS,
-        data: { thoughts: [addThought, ...thoughts] },
+        query: QUERY_ME,
+        data: { me: { ...me, thoughts: [...me.thoughts, addThought] } },
       });
     },
   });
